@@ -35,7 +35,7 @@ const trabalhar = (cresim, emprego) => {
   const bonusPercentual = cresim.bonusSalario ? cresim.bonusSalario / 100 : 0;
   const salarioFinalBase = salarioBase * (1 + bonusPercentual);
 
-  const energiaDisponivel = Math.max(2, cresim.energia - 2); 
+  const energiaDisponivel = Math.max(2, cresim.energia - 2);
   const tempoTrabalho = Math.min(
     JORNADA_PADRAO,
     energiaDisponivel * (JORNADA_PADRAO / ENERGIA_POR_TURNO)
@@ -62,18 +62,17 @@ const trabalhar = (cresim, emprego) => {
   );
   salarioFinal *= 1 - penalidade;
 
+  // ✅ Ajuste: O salário é adicionado aqui corretamente sem somar de novo depois
   const cresimComSalario = adicionarCresceleons(cresimHigiene, salarioFinal);
 
   const cresimAtualizado = passarTempo(cresimComSalario, tempoTrabalho);
 
   return {
-    cresim: atualizarCresim(cresimAtualizado, {
-      cresceleons: cresimAtualizado.cresceleons + salarioFinal,
-    }),
-    tempo: tempoTrabalho,
+    cresim: atualizarCresim(cresimAtualizado), 
     salario: salarioFinal,
   };
 };
+
 
 const obterNivelHabilidade = (cresim, categoria) => {
   const pontos = cresim.habilidades[categoria] || 0;
