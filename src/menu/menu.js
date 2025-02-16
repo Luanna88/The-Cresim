@@ -18,6 +18,7 @@ import { tomarBanho } from "../services/higiene.js";
 import {
   interagir,
   obterInteracoesDisponiveis,
+  determinarNivelRelacionamento
 } from "../services/relacionamento.js";
 import { CONSTANTES } from "../utils/constants.js";
 import {
@@ -25,6 +26,7 @@ import {
   buscarTrabalho,
   trabalhar,
 } from "../services/trabalho.js";
+
 
 const delay = (time) => {
   return new Promise((resolve) => setTimeout(resolve, time));
@@ -280,7 +282,6 @@ const atualizarCresimSelecionado = async (cresimId) => {
   cresim = await selecionarCresim(cresimId);
 };
 
-// AÇÃO DORMIR
 const acaoDormir = async () => {
   const tempo = await selecionarTempoSoninho();
   console.log("💤 Dormindo...");
@@ -293,52 +294,55 @@ const selecionarTempoSoninho = async () => {
   console.log("\n🌙 Quanto tempo deseja dormir?");
   console.log("  1 - 5000ms");
   console.log("  2 - 10000ms");
-  console.log("  3 - 15000ms");
-  const opcao = parseInt(await escolherOpcao(1, 3), 10);
+  const opcao = parseInt(await escolherOpcao(1, 2), 10);
   switch (opcao) {
     case 1:
       return CONSTANTES.CICLO_SIMPLES_DE_SONO;
     case 2:
       return CONSTANTES.CICLO_DUPLO_DE_SONO;
-    case 3:
-      return CONSTANTES.CICLO_TRIPLO_DE_SONO;
     default:
       return 0;
   }
 };
 
-// AÇÃO BANHO
 const acaoTomarBanho = async () => {
   console.log("🚿 Tomando banho...");
   const { cresim: cresimAtualizado } = tomarBanho(cresim);
   updateLocalStorage(cresimAtualizado);
 };
 
-// AÇÃO ESTUDAR
 const acaoEstudar = async () => {
   console.log("📖 Estudando...");
+
   const habilidade = await selecionarHabilidades();
   const itemHabilidade = await selecionarItensHabilidade(habilidade);
+  const cresceleonsNecessarios = itemHabilidade.preco; 
+  const cresceleonsAtuais = cresim.cresceleons;
+
+  if (cresceleonsAtuais < cresceleonsNecessarios) {
+    const falta = cresceleonsNecessarios - cresceleonsAtuais;
+    console.log(`❌ Você não tem cresceleons suficientes! Você precisa de mais ${falta} cresceleons para poder estudar. Vá trabalhar para ganhar mais.`);
+    return;
+  }
+  cresim.cresceleons -= cresceleonsNecessarios;
 
   const nivelAtual = obterNivelHabilidade(cresim.habilidades[habilidade]);
-
-  const { cresim: cresimAtualizado } = treinar(cresim, itemHabilidade);
+  const { cresim: cresimAtualizado } = treinar(cresim, habilidade, itemHabilidade);
+  cresimAtualizado.cresceleons = cresim.cresceleons;
+  const nivelAtualizado = obterNivelHabilidade(cresimAtualizado.habilidades[habilidade]);
 
   console.log(
-    `Nível da habilidade ${habilidade}: ${nivelAtual} → ${obterNivelHabilidade(
-      cresimAtualizado.habilidades[habilidade]
-    )}`
+    `💰 Cresceleons restantes: ${cresimAtualizado.cresceleons}`
   );
-
+  console.log(
+    `Nível da habilidade ${habilidade}: ${nivelAtual} → ${nivelAtualizado}`
+  );
   updateLocalStorage(cresimAtualizado);
 
   console.log(
-    `📚 Habilidade ${habilidade} aprimorada! Novo nível: ${obterNivelHabilidade(
-      cresimAtualizado.habilidades[habilidade]
-    )}`
+    `📚 Habilidade ${habilidade} aprimorada! Novo nível: ${nivelAtualizado}`
   );
 };
-
 const selecionarItensHabilidade = async (habilidade) => {
   listarItensHabilidade(habilidade);
   let item = null;
@@ -356,19 +360,23 @@ const selecionarItensHabilidade = async (habilidade) => {
   }
   return item;
 };
-
-const listarItensHabilidade = (habilidades) => {
+const listarItensHabilidade = (habilidade) => {
   clear();
   console.log("\n===== MENU | SELEÇÃO DE ITENS =====\n");
-  console.log(`📚 Habilidade selecionada: ${habilidades}`);
-  buscarItensHabilidades(habilidades).forEach((item) => {
+  console.log(`📚 Habilidade selecionada: ${habilidade}`);
+ 
+  const itens = buscarItensHabilidades(habilidade);
+  if (itens.length === 0) {
+    console.log("❌ Nenhum item encontrado para esta habilidade.");
+    return;
+  }
+  itens.forEach((item) => {
     console.log(
       ` ➡️    ${item.id} - ${item.nome} [ 🏅 Pontos: ${item.pontos} | ⏳ Preço: $${item.preco}]`
     );
   });
 };
 
-// AÇÃO TRABALHAR
 const acaoTrabalhar = async () => {
   const emprego = await selecaoDeTrabalho();
 
@@ -394,7 +402,7 @@ const selecaoDeTrabalho = async () => {
       await useQuestion("Informe o ID do trabalho escolhido:"),
       10
     );
-    trabalho = await buscarTrabalho(trabalhoId); // Agora é assíncrona
+    trabalho = await buscarTrabalho(trabalhoId); 
 
     if (!trabalho) {
       console.log("❌ Trabalho não encontrado, tente novamente.");
@@ -402,7 +410,7 @@ const selecaoDeTrabalho = async () => {
     }
   }
 
-  return trabalho; // Retorna o objeto inteiro, e não apenas a categoria
+  return trabalho; 
 };
 
 const listarSelecaoDeTrabalho = (nomeCresim) => {
@@ -414,7 +422,6 @@ const listarSelecaoDeTrabalho = (nomeCresim) => {
   });
 };
 
-// AÇÃO SOCIALIZAR
 const acaoSocializar = async () => {
   const outroCresimId = await escolherOutroCresim();
   const tipoInteracao = await escolherTipoInteracao();
@@ -425,24 +432,48 @@ const acaoSocializar = async () => {
     console.log("❌ Outro Cresim não encontrado.");
     return;
   }
-  const interacoesDisponiveis = obterInteracoesDisponiveis();
-  const resultado = interagir(
-    cresim,
-    outroCresim,
-    tipoInteracao,
-    interacoesDisponiveis
-  );
+
+  const interacoesDisponiveis = await obterInteracoesDisponiveis();
+  const resultado = interagir(cresim, outroCresim, tipoInteracao, interacoesDisponiveis);
 
   resultado.tempo = Math.max(0, resultado.tempo);
 
-  console.log("TEMPO INTERACAO", resultado.tempo);
+  console.log("TEMPO INTERAÇÃO", resultado.tempo);
   if (resultado.tempo > 0) {
     console.log("💬 Socializando...");
+
+    atualizarStatusCresim(resultado.cresim, resultado.outroCresim);
+    atualizarStatusCresim(resultado.outroCresim, resultado.cresim);
+
     updateLocalStorage(resultado.cresim);
     updateLocalStorage(resultado.outroCresim);
   } else {
     console.log("❌ Falha na interação.");
   }
+};
+
+
+const atualizarStatusCresim = (cresim, outroCresim, pontos = 10) => {
+  if (!Array.isArray(cresim.relacionamentos)) {
+    cresim.relacionamentos = [];
+  }
+
+  cresim.energia = Math.max(0, cresim.energia - 10);
+  cresim.moral += 5;
+
+  const relacao = cresim.relacionamentos.find(r => r.nome === outroCresim.nome);
+  if (relacao) {
+    relacao.pontos += pontos;
+    relacao.nivel = determinarNivelRelacionamento(relacao.pontos);
+  } else {
+    cresim.relacionamentos.push({
+      nome: outroCresim.nome,
+      pontos: pontos,
+      nivel: determinarNivelRelacionamento(pontos)
+    });
+  }
+
+  console.log(`Status de ${cresim.nome} atualizado. Relacionamento com ${outroCresim.nome}: ${relacao ? relacao.nivel : "NEUTRO"}`);
 };
 
 const escolherOutroCresim = async () => {
@@ -456,14 +487,15 @@ const escolherOutroCresim = async () => {
 
 const escolherTipoInteracao = async () => {
   console.log("\n🔄 Escolha o tipo de interação:");
-  const opcoesInteracao = ["Conversar", "Brincar", "Ajudar"];
+  const opcoesInteracao = ["Discutir","Conversar", "Abraçar", "Beijar"];
   opcoesInteracao.forEach((interacao, index) => {
-    console.log(`  ${index + CONSTANTES.CORRECAO_INDICE} - ${interacao}`);
+    console.log(`  ${index + 1} - ${interacao}`);
   });
 
   const opcao = await escolherOpcao(1, opcoesInteracao.length);
   return opcoesInteracao[opcao - 1];
 };
+
 
 const exibirCresim = () => {
   console.log("\n  🧑 Personagem selecionado: ", cresim.nome);
@@ -485,14 +517,17 @@ const exibirHabilidades = (habilidades) => {
     return "Nenhuma";
   }
   return Object.entries(habilidades)
+    .filter(([chave, valor]) => valor > 0) 
     .map(([chave, valor]) => `${chave}: ${valor}`)
     .join(" | ");
 };
 
 const exibirRelacionamentos = (relacionamentos) => {
-  return relacionamentos ? relacionamentos.join(", ") : "Nenhum";
+  if (!relacionamentos || relacionamentos.length === 0) {
+    return "Nenhum";
+  }
+  return relacionamentos.map(r => `${r.nome} (${r.nivel})`).join(", ");
 };
-
 const escolherOpcao = async (min, max) => {
   let opcao = await useQuestion("Escolha uma opção: ");
   const opcaoNumerica = parseInt(opcao, 10);

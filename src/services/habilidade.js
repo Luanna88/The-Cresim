@@ -16,7 +16,7 @@ const carregarItensHabilidade = async () => {
 };
 carregarItensHabilidade();
 
-const treinar = (cresim, habilidade) => {
+const treinar = (cresim, habilidade, itemHabilidade) => {
   if (estaOcupado(cresim)) {
     return { cresim, tempo: 0 };
   }
@@ -24,15 +24,6 @@ const treinar = (cresim, habilidade) => {
   if (cresim.energia < CONSTANTES.ENERGIA_TREINO) {
     return { cresim, tempo: 0 };
   }
-
-  const itemHabilidade = cresim.itens.find((item) =>
-    itensHabilidade[habilidade].some((it) => it.nome === item.nome)
-  );
-
-  // if (!itemHabilidade) {
-  //   console.log("❌ Cresim não possui um item dessa habilidade!");
-  //   return { cresim, tempo: 0 };
-  // }
 
   let pontosDeHabilidade = itemHabilidade.pontos;
   if (habilidade === cresim.aspiracao) {
@@ -49,16 +40,18 @@ const treinar = (cresim, habilidade) => {
 
   const cresimComHigieneReduzida = reduzirHigieneTreino(cresimAtualizado);
 
-  return {
-    cresim: atualizarCresim(cresimComHigieneReduzida, {
-      habilidades: {
-        ...cresim.habilidades,
-        [habilidade]: cresim.habilidades[habilidade] + pontosDeHabilidade,
-      },
-      pontosHabilidade: cresim.pontosHabilidade + pontosDeHabilidade,
-    }),
-    tempo: CONSTANTES.CICLO_TEMPO_TREINO,
-  };
+ const cresimFinal = atualizarCresim(cresimComHigieneReduzida, {
+  habilidades: {
+    ...cresim.habilidades,
+    [habilidade]: (cresim.habilidades[habilidade] || 0) + pontosDeHabilidade, 
+  },
+  pontosHabilidade: cresim.pontosHabilidade + pontosDeHabilidade,
+});
+
+return {
+  cresim: cresimFinal,
+  tempo: CONSTANTES.CICLO_TEMPO_TREINO,
+};
 };
 
 const obterNivelHabilidade = (pontos) => {
