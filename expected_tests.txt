@@ -21,6 +21,7 @@ Deve recuar o relacionamento de dois Cresims para INIMIZADE
 Deve descontar os pontos de energia em uma interação entre dois Cresims  
 Deve conseguir aplicar o cheat SORTENAVIDA e receber as recompensas  
 Deve conseguir aplicar o cheat DEITADONAREDE e receber as recompensas  
-Deve conseguir aplicar o cheat JUNIM e receber as recompensas para a habilidade escolhida  
+Deve conseguir aplicar o cheat TERAPIA e receber as recompensas  
+Deve conseguir aplicar o cheat DESODORANTE e receber as recompensas  
 Deve conseguir aplicar o cheat CAROLINAS e receber as recompensas  
-Deve conseguir aplicar o cheat SINUSITE ter a vida zerada  
+Deve conseguir aplicar o cheat SINUSITE e ter a vida zerada  
