@@ -1,12 +1,15 @@
-const ITENS_HABILIDADES = "https://emilyspecht.github.io/the-cresim/itens-habilidades.json";
-const ITENS_EMPREGOS  = "https://emilyspecht.github.io/the-cresim/empregos.json";
+const ITENS_HABILIDADES  = "https://emilyspecht.github.io/the-cresim/itens-habilidades.json";
+const ITENS_EMPREGOS     = "https://emilyspecht.github.io/the-cresim/empregos.json";
+const ITENS_INTERACOES   = "https://emilyspecht.github.io/the-cresim/interacoes.json";
 
 async function buscar(url) {
   try {
     const resposta = await fetch(url);
+
     if (!resposta.ok) {
       throw new Error(`Erro ao buscar ${url}: ${resposta.status}`);
     }
+
     return await resposta.json();
   } catch (erro) {
     console.error("Erro na API:", erro);
@@ -20,4 +23,8 @@ export function buscarHabilidades() {
 
 export function buscarEmpregos() {
   return buscar(ITENS_EMPREGOS);
+}
+
+export function buscarInteracoes() {
+  return buscar(ITENS_INTERACOES); 
 }
