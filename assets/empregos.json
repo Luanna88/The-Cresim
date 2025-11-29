@@ -1,0 +1,52 @@
+[
+    {
+        "id": 1,
+        "cargo": "Jogador de Dota",
+        "categoria": "JOGOS",
+        "salario": [
+            {"nivel": "JUNIOR", "valor": 160},
+            {"nivel": "PLENO", "valor": 250},
+            {"nivel": "SENIOR", "valor": 340}
+        ]
+    },
+    {
+        "id": 2,
+        "cargo": "Assistente do Jacquin",
+        "categoria": "GASTRONOMIA",
+        "salario": [
+            {"nivel": "JUNIOR", "valor": 130},
+            {"nivel": "PLENO", "valor": 220},
+            {"nivel": "SENIOR", "valor": 280}
+        ]
+    },
+    {
+        "id": 3,
+        "cargo": "Segurador de pincéis",
+        "categoria": "PINTURA",
+        "salario": [
+            {"nivel": "JUNIOR", "valor": 110},
+            {"nivel": "PLENO", "valor": 230},
+            {"nivel": "SENIOR", "valor": 270}
+        ]
+    },
+    {
+        "id": 4,
+        "cargo": "Desafinador",
+        "categoria": "MUSICA",
+        "salario": [
+            {"nivel": "JUNIOR", "valor": 210},
+            {"nivel": "PLENO", "valor": 300},
+            {"nivel": "SENIOR", "valor": 410}
+        ]
+    },
+    {
+        "id": 5,
+        "cargo": "Ladrão de planta",
+        "categoria": "JARDINAGEM",
+        "salario": [
+            {"nivel": "JUNIOR", "valor": 160},
+            {"nivel": "PLENO", "valor": 250},
+            {"nivel": "SENIOR", "valor": 340}
+        ]
+    }
+]

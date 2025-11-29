@@ -1,0 +1,102 @@
+{
+    "GASTRONOMIA": [
+        {
+            "id": 1,
+            "nome": "Makita cortadora de cebola",
+            "pontos": 3,
+            "preco": 1800
+        },
+        {
+            "id": 2,
+            "nome": "Frigideira da Polishop",
+            "pontos": 5,
+            "preco": 3200
+        },
+        {
+            "id": 3,
+            "nome": "Panela elétrica mágica",
+            "pontos": 7,
+            "preco": 4500
+        }
+    ],
+    "PINTURA": [
+        {
+            "id": 1,
+            "nome": "Lápis mordido",
+            "pontos": 3,
+            "preco": 1200
+        },
+        {
+            "id": 2,
+            "nome": "Aquarela esfarelenta",
+            "pontos": 5,
+            "preco": 2800
+        },
+        {
+            "id": 3,
+            "nome": "Tinta a óleo dos Alpes suiços",
+            "pontos": 8,
+            "preco": 3800
+        }
+    ],
+    "JOGOS": [
+        {
+            "id": 1,
+            "nome": "Mouse com led",
+            "pontos": 2,
+            "preco": 2000
+        },
+        {
+            "id": 2,
+            "nome": "Ventuinha barulhenta",
+            "pontos": 5,
+            "preco": 3600
+        },
+        {
+            "id": 3,
+            "nome": "Teclado torneiro mecânico",
+            "pontos": 7,
+            "preco": 5200
+        }
+    ],
+    "JARDINAGEM": [
+        {
+            "id": 1,
+            "nome": "Adubo de lixo orgânico",
+            "pontos": 2,
+            "preco": 1800
+        },
+        {
+            "id": 2,
+            "nome": "Minhoca sapeca",
+            "pontos": 5,
+            "preco": 2600
+        },
+        {
+            "id": 3,
+            "nome": "Composteira vegana",
+            "pontos": 9,
+            "preco": 3200
+        }
+    ],
+    "MUSICA": [
+        {
+            "id": 1,
+            "nome": "Saxofone decorativo",
+            "pontos": 3,
+            "preco": 2000
+        },
+        {
+            "id": 2,
+            "nome": "Gaita desafinada",
+            "pontos": 6,
+            "preco": 3000
+        },
+        {
+            "id": 3,
+            "nome": "Piano burguês",
+            "pontos": 12,
+            "preco": 6000
+        }
+    ]
+}

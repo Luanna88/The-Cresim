@@ -1,0 +1,130 @@
+{
+    "INIMIZADE": [
+        {
+            "id": 1,
+            "interacao": "Gritar",
+            "pontos": -4,
+            "energia": 2
+        },
+        {
+            "id": 2,
+            "interacao": "Bater",
+            "pontos": -8,
+            "energia": 4
+        },
+        {
+            "id": 3,
+            "interacao": "Discutir",
+            "pontos": -4,
+            "energia": 2
+        },
+        {
+            "id": 4,
+            "interacao": "Ridicularizar",
+            "pontos": -6,
+            "energia": 2
+        }
+    ],
+    "NEUTRO": [
+        {
+            "id": 1,
+            "interacao": "Cumprimentar",
+            "pontos": 1,
+            "energia": 0
+        },
+        {
+            "id": 2,
+            "interacao": "Dar uma dica",
+            "pontos": 1,
+            "energia": 1
+        },
+        {
+            "id": 3,
+            "interacao": "Elogiar",
+            "pontos": 4,
+            "energia": 1
+        },
+        {
+            "id": 4,
+            "interacao": "Conversar",
+            "pontos": 2,
+            "energia": 2
+        },
+        {
+            "id": 5,
+            "interacao": "Piada",
+            "pontos": 2,
+            "energia": 1
+        },
+        {
+            "id": 6,
+            "interacao": "Criticar",
+            "pontos": -3,
+            "energia": 2
+        },
+        {
+            "id": 7,
+            "interacao": "Falar sobre politica",
+            "pontos": -2,
+            "energia": 2
+        },
+        {
+            "id": 8,
+            "interacao": "Reclamar",
+            "pontos": -2,
+            "energia": 2
+        },
+        {
+            "id": 9,
+            "interacao": "Ignorar",
+            "pontos": -1,
+            "energia": 0
+        }
+    ],
+    "AMIZADE": [
+        {
+            "id": 1,
+            "interacao": "Abraçar",
+            "pontos": 3,
+            "energia": 1
+        },
+        {
+            "id": 2,
+            "interacao": "Ficar orgulhoso",
+            "pontos": 2,
+            "energia": 1
+        },
+        {
+            "id": 3,
+            "interacao": "Comemorar",
+            "pontos": 2,
+            "energia": 2
+        },
+        {
+            "id": 4,
+            "interacao": "Fazer um favor",
+            "pontos": 4,
+            "energia": 3
+        }
+    ],
+    "AMOR": [
+        {
+            "id": 1,
+            "interacao": "Beijar",
+            "pontos": 3,
+            "energia": 2
+        },
+        {
+            "id": 2,
+            "interacao": "Fazer carinho",
+            "pontos": 1,
+            "energia": 1
+        },
+        {
+            "id": 3,
+            "interacao": "Abraçar romanticamente",
+            "pontos": 2,
+            "energia": 1
+        }
+    ]
+}
