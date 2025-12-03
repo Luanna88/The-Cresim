@@ -40,7 +40,7 @@ No jogo, o jogador pode criar múltiplos Cresims, escolher aspirações de carre
 - Para isso, ele deve comprar itens que vão permiti-lo praticar e acrescentar pontos de habilidade;
     
 [ITENS-DE-HABILIDADE]
-Link para requisição: https://emilyspecht.github.io/the-cresim/itens-habilidades.json
+Link para requisição: https://luanna88.github.io/The-Cresim/assets/itens-habilidades.json
 
 - Cada ciclo de treino dura 8.000ms. Quando completo, ele ganha os pontos de habilidade do item que ele utilizou;
 - Caso a habilidade que o Cresim esteja exercitando seja sua aspiração, ele poderá acrescentar +1 ponto de habilidade a cada ciclo de treino;
@@ -123,7 +123,7 @@ Link para requisição: https://luanna88.github.io/The-Cresim/assets/empregos.js
 💑 REQUISITO 05 - RELACIONAMENTOS
 
 [RELACIONAMENTOS]
-Link para requisição: https://emilyspecht.github.io/the-cresim/interacoes.json
+Link para requisição: https://luanna88.github.io/The-Cresim/assets/interacoes.json
 
 - Um Cresim pode se comunicar com outro;
 - Ao comunicar-se, o relacionamento dos Cresims vai evoluindo de acordo com os pontos de cada tipo de interação;
