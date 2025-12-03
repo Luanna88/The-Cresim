@@ -67,7 +67,7 @@ Link para requisição: https://emilyspecht.github.io/the-cresim/itens-habilidad
 💼 REQUISITO 04 - TRABALHO
 
 [EMPREGOS]
-Link para requisição: https://emilyspecht.github.io/the-cresim/empregos.json
+Link para requisição: https://luanna88.github.io/The-Cresim/assets/empregos.json
 
 - A jornada de trabalho padrão de um Cresim é de 20.000ms;
 - O Cresim deve perder 10 pontos de energia na jornada de trabalho padrão;
