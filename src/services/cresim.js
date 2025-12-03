@@ -1,7 +1,7 @@
 import { CONSTANTES } from "../utils/constantes.js";
-import {updateStorage, salvarNovoCresim, updateLocalStorage, buscarTodosAtivos, findCresim, selecionarCresim} from "./local-storage/funcoes-menu.js";
+import {updateStorage, salvarNovoCresim, updateLocalStorage, buscarTodosAtivos, findCresim, selecionarCresim} from "../services/local-storage/funcoes-menu.js";
 
-const criarCresim = (nome, aspiracao) => {
+const criarCresim = (nome, aspiracao, habilidadesDisponiveis, itensHabilidades) => {
   return {
     nome: nome,
     aspiracao,

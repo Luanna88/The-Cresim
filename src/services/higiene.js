@@ -1,57 +1,77 @@
+import { atualizarCresim } from "../services/cresim.js";
+import { passarTempo } from "../services/tempo.js";
+import { removerCresceleons, temCresceleonsSuficientes } from "../services/economia.js";
 import { CONSTANTES } from "../utils/constantes.js";
-import { atualizarCresim } from "./cresim.js";
 
-export function higieneSuficienteParaAcao(cresim, pontosNecessarios) {
-  return cresim.higiene - pontosNecessarios >= 0;
-}
+const reduzirHigiene = (cresim, quantidade) => {
+  const MIN_HIGIENE = CONSTANTES.HIGIENE_MINIMA_TRABALHO; 
 
-export function perderHigiene(cresim, qtd) {
-  const novaHigiene = Math.max(0, cresim.higiene - qtd);
+  const novaHigiene = Math.max(MIN_HIGIENE, cresim.higiene - quantidade);
+
   return atualizarCresim(cresim, { higiene: novaHigiene });
-}
+};
 
-export function recuperarHigieneTotal(cresim) {
-  return atualizarCresim(cresim, { higiene: CONSTANTES.HIGIENE_MAXIMA });
-}
+const podeExecutarPorHigiene = (cresim, custoMinimo) => {
+  return cresim.higiene >= custoMinimo;
+};
 
-export function trabalharTurnoCompleto(cresim) {
-  return perderHigiene(cresim, CONSTANTES.REDUCAO_HIGIENE_CICLO_TRABALHO);
-}
+const reduzirHigieneTrabalho = (cresim, tempoTrabalhado) => {
+  const turno = CONSTANTES.CICLO_TEMPO_TURNO_COMPLETO;
 
-export function trabalharParcial(cresim, tempoTrabalhado, tempoTotalTurno) {
-  const porcentagem = tempoTrabalhado / tempoTotalTurno;
-  const perda = CONSTANTES.REDUCAO_HIGIENE_CICLO_TRABALHO * porcentagem;
-
-  return perderHigiene(cresim, perda);
-}
-
-export function treinarCiclo(cresim) {
-  return perderHigiene(cresim, 2);
-}
-
-export async function tomarBanho(cresim, callback = () => {}) {
-  if (cresim.cresceleons < CONSTANTES.CUSTO_BANHO) {
-    return { sucesso: false, motivo: "Sem cresceleon" };
+  if (tempoTrabalhado >= turno) {
+    return reduzirHigiene(cresim, CONSTANTES.REDUCAO_HIGIENE_CICLO_TRABALHO);
   }
 
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const higienizado = recuperarHigieneTotal(cresim);
+  const percentual = tempoTrabalhado / turno;
+  const perdaProporcional =
+    CONSTANTES.REDUCAO_HIGIENE_CICLO_TRABALHO * percentual;
 
-      const atualizado = atualizarCresim(higienizado, {
-        cresceleons: higienizado.cresceleons - CONSTANTES.CUSTO_BANHO,
-      });
+  return reduzirHigiene(cresim, Math.floor(perdaProporcional));
+};
 
-      callback(atualizado);
-      resolve({ sucesso: true, cresim: atualizado });
-    }, CONSTANTES.CICLO_TEMPO_BANHO);
+const reduzirHigieneTreino = (cresim) => {
+  return reduzirHigiene(cresim, CONSTANTES.REDUCAO_HIGIENE_TREINO);
+};
+
+const tomarBanho = (cresim) => {
+  if (!temCresceleonsSuficientes(cresim, CONSTANTES.CUSTO_BANHO)) {
+    return { cresim, sucesso: false, motivo: "Dinheiro insuficiente" };
+  }
+
+  const cresimApósPagamento = removerCresceleons(
+    cresim,
+    CONSTANTES.CUSTO_BANHO
+  );
+
+  const cresimComTempoGasto = passarTempo(
+    cresimApósPagamento,
+    CONSTANTES.CICLO_TEMPO_BANHO
+  );
+
+  const cresimHigienizado = atualizarCresim(cresimComTempoGasto, {
+    higiene: CONSTANTES.HIGIENE_MAXIMA,
   });
-}
 
-export function calcularSalarioComHigiene(cresim, salarioBase) {
+  return {
+    cresim: cresimHigienizado,
+    sucesso: true,
+  };
+};
+
+const aplicarPenalidadeHigiene = (salario, cresim) => {
   if (cresim.higiene < CONSTANTES.HIGIENE_MINIMA_TRABALHO) {
-    const desconto = salarioBase * CONSTANTES.PENALIDADE_HIGIENE_TRABALHO;
-    return salarioBase - desconto;
+    const desconto = salario * CONSTANTES.PENALIDADE_HIGIENE_TRABALHO;
+    return salario - desconto;
   }
-  return salarioBase;
-}
+
+  return salario;
+};
+
+export {
+  reduzirHigiene,
+  podeExecutarPorHigiene,
+  reduzirHigieneTrabalho,
+  reduzirHigieneTreino,
+  tomarBanho,
+  aplicarPenalidadeHigiene,
+};

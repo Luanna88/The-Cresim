@@ -1,44 +1,62 @@
-import { atualizarCresim } from "./cresim.js";
+import { atualizarCresim } from "../services/cresim.js";
+import {passarTempo, estaOcupado} from "../services/tempo.js";
 import { CONSTANTES } from "../utils/constantes.js";
 
-export function podeAgir() {
-  return energia > 0;
-}
-
-export function gastarEnergia(cresim, qtde) {
-  if (!podeAgir(cresim)) {
-    return cresim;
+const dormir = (cresim, tempoDormido) => {
+  if (estaOcupado(cresim)) {
+    return { cresim, tempo: 0 };
   }
 
-  const novaEnergia = Math.max(0, cresim.energia - qtde);
-
-  return atualizarCresim(cresim, { energia: novaEnergia });
-}
-
-export function dormir(cresim, tempoMs, callback = () => {}) {
-  if (tempoMs < 5000) {
-    return cresim;
+  if (cresim.energia >= CONSTANTES.ENERGIA_MAXIMA) {
+    return { cresim, tempo: 0 };
   }
 
-  const ciclos = Math.floor(tempoMs / 5000);
-
-  let ganho = ciclos * 4;
-
-  if (ciclos > 1) {
-    ganho += 2;
+  if (tempoDormido <= 0) {
+    return { cresim, tempo: 0 };
   }
 
-  setTimeout(() => {
-    const novaEnergia = Math.min(
-      cresim.energia + ganho,
-      CONSTANTES.ENERGIA_MAXIMA
-    );
+  const energiaGanhada =
+    Math.floor(tempoDormido / CONSTANTES.CICLO_SIMPLES_DE_SONO) * 4;
+  const energiaExtra =
+    Math.floor(tempoDormido / CONSTANTES.CICLO_DUPLO_DE_SONO) * 2;
+  const novaEnergia = Math.min(
+    CONSTANTES.ENERGIA_MAXIMA,
+    cresim.energia + energiaGanhada + energiaExtra
+  );
 
-    const atualizado = atualizarCresim(cresim, { energia: novaEnergia });
+  const cresimAtualizado = passarTempo(cresim, tempoDormido);
 
-    callback(atualizado);
+  return {
+    cresim: atualizarCresim(cresimAtualizado, { energia: novaEnergia }),
+    tempo: tempoDormido,
+  };
+};
 
-  }, tempoMs);
+const reduzirEnergia = (cresim, custo) => {
+  if (cresim.energia < custo) {
+    return { cresim, sucesso: false };
+  }
 
-  return cresim;
-}
+  const novaEnergia = Math.max(0, cresim.energia - custo);
+
+  return {
+    cresim: atualizarCresim(cresim, { energia: novaEnergia }),
+    sucesso: true,
+  };
+};
+
+const podeExecutarAcao = (cresim, custoEnergia) => {
+  if (cresim.energia < custoEnergia) {
+    return false;
+  }
+  return true;
+};
+
+const estaSemEnergia = (cresim) => {
+  if (cresim.energia === CONSTANTES.ENERGIA_ZERADA) {
+    return true;
+  }
+  return false;
+};
+
+export { dormir, reduzirEnergia, podeExecutarAcao, estaSemEnergia };

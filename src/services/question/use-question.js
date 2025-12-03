@@ -1,31 +1,32 @@
 import readline from "readline";
-import { processarCheat } from "../cheats.js";
-import { updateLocalStorage, selecionarCresim } from "../local-storage/funcoes-menu.js";
+import { aplicarCheat, cheatsDisponiveis } from "../cheats.js";
+import { updateLocalStorage } from "../cresim.js";
 
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-  terminal: true,
-});
-
-export const useQuestion = (str, cresimAtual) => {
+export const useQuestion = (pergunta, cresim = null) => {
   return new Promise((resolve) => {
-    rl.question(`${str}\n> `, (result) => {
-      
-      const cresimCheat = processarCheat(result, cresimAtual);
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    });
 
-      if (cresimCheat !== cresimAtual) {
-        console.log("\n⚡ Cheat ativado!\n");
+    rl.question(`${pergunta}\n> `, (resposta) => {
+      rl.close();
 
-        updateLocalStorage(cresimCheat);
-        selecionarCresim(cresimCheat.id);
-
-        return resolve(null); 
+      if (cresim) {
+        const cheat = cheatsDisponiveis.find(
+          (c) => c.codigo === resposta.toUpperCase()
+        );
+        if (cheat) {
+          const { cresim: cresimAtualizado, aplicado } = aplicarCheat(cresim, cheat.codigo);
+          if (aplicado) {
+            updateLocalStorage(cresimAtualizado);
+            console.log(`\n🤖 Cheat aplicado: ${cheat.codigo}`);
+          }
+          return resolve(""); 
+        }
       }
 
-      resolve(result);
+      resolve(resposta);
     });
   });
 };
-
-process.on("exit", () => rl.close());

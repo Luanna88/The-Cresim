@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "codigo": "SORTENAVIDA",
+    "categoria": "SALARIO",
+    "descricao": "Aumenta o salario do Cresim em 10%",
+    "valor": 10,
+    "unidade": "%"
+  },
+  {
+    "id": 2,
+    "codigo": "DEITADONAREDE",
+    "categoria": "ENERGIA",
+    "descricao": "Aumenta a energia do Cresim em 5 pontos",
+    "valor": 5,
+    "unidade": "pt"
+  },
+  {
+    "id": 3,
+    "codigo": "JUNIM",
+    "categoria": "HABILIDADE",
+    "descricao": "Aumenta a habilidade escolhida do Cresim em 5 pontos",
+    "valor": 5,
+    "unidade": "pt"
+  },
+  {
+    "id": 4,
+    "codigo": "CAROLINAS",
+    "categoria": "VIDA",
+    "descricao": "Aumenta a vida do Cresim em 100.000ms",
+    "valor": 100000,
+    "unidade": "ms"
+  },
+  {
+    "id": 5,
+    "codigo": "SINUSITE",
+    "categoria": "VIDA",
+    "descricao": "Remove todo o tempo de vida do personagem",
+    "valor": 0,
+    "unidade": ""
+  }
+]

@@ -1,4 +1,4 @@
-import { atualizarCresim } from "./cresim.js";
+import { atualizarCresim } from "../services/cresim.js";
 
 const adicionarCresceleons = (cresim, valor) => {
   if (valor <= 0) {
